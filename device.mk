@@ -17,11 +17,7 @@
 $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
 # Get non-open-source specific aspects
-<<<<<<< HEAD
 $(call inherit-product, vendor/samsung/trlte/trlte-vendor.mk)
-=======
-$(call inherit-product-if-exists, vendor/samsung/trlte/trlte-vendor.mk)
->>>>>>> b9007df36c1498f5e3e801db6a89b248d67b79ce
 
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += device/samsung/trlte/overlay
