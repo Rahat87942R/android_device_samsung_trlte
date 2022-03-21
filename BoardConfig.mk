@@ -1,11 +1,10 @@
-#
-# Copyright (C) 2017 The LineageOS Project
+# Copyright (C) 2017-2020 The LineageOS Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#      http://www.apache.org/licenses/LICENSE-2.0
+# http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,38 +12,50 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# inherit from common trlte
--include device/samsung/trlte-common/BoardConfigCommon.mk
+# Inherit from universal7580-common
+include device/samsung/universal7580-common/BoardConfigCommon.mk
 
-TARGET_OTA_ASSERT_DEVICE := trlte,trltedt,trltecan,trltespr,trltetmo,trlteusc,trltevzw,trltexx
+LOCAL_PATH := device/samsung/j7elte
 
-# Camera
-TARGET_FIXUP_PREVIEW := true
+TARGET_OTA_ASSERT_DEVICE := j7elte
 
-# Fingerprint
-BUILD_FINGERPRINT := samsung/trltexx/trlte:6.0.1/MMB29M/N910FXXS1DQH9:user/release-keys
-
-# Kernel
-TARGET_KERNEL_VARIANT_CONFIG := apq8084_sec_trlte_eur_defconfig
+# Bluetooth
+BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(LOCAL_PATH)/bluetooth
 
 # Init
-TARGET_INIT_VENDOR_LIB := libinit_trlte
-TARGET_RECOVERY_DEVICE_MODULES := libinit_trlte
+TARGET_INIT_VENDOR_LIB := libinit_j7elte
+
+# Kernel
+TARGET_KERNEL_CONFIG := lineageos_j7elte_defconfig
+
+# Network Routing
+TARGET_NEEDS_NETD_DIRECT_CONNECT_RULE := true
 
 # Partitions
-BOARD_FLASH_BLOCK_SIZE := 262144
-BOARD_BOOTIMAGE_PARTITION_SIZE := 17825792
-BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
-BOARD_CACHEIMAGE_PARTITION_SIZE := 524288000
-BOARD_RECOVERYIMAGE_PARTITION_SIZE := 19922944
-BOARD_SYSTEMIMAGE_PARTITION_SIZE := 3774873600
-BOARD_USERDATAIMAGE_PARTITION_SIZE := 26558296064 # 26558312448 - 16384 (footer)
+BOARD_HAS_NO_MISC_PARTITION:= false
+TARGET_USERIMAGES_USE_EXT4 := true
+TARGET_USERIMAGES_USE_F2FS := true
+BOARD_BOOTIMAGE_PARTITION_SIZE := 33554432
+BOARD_CACHEIMAGE_PARTITION_SIZE := 209715200
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 39845888
+BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2206203904
+BOARD_USERDATAIMAGE_PARTITION_SIZE := 13035896832
+BOARD_FLASH_BLOCK_SIZE := 4096
 
-# Releasetools
-TARGET_RELEASETOOLS_EXTENSIONS := device/samsung/trlte-common/releasetools
+# RIL
+BOARD_MODEM_TYPE := tss310
+BOARD_PROVIDES_LIBRIL := true
+BOARD_NEEDS_ROAMING_PROTOCOL_FIELD := true
 
-# Radio/RIL
-include $(COMMON_PATH)/radio/single/board.mk
+# Manifest
+DEVICE_MANIFEST_FILE := $(LOCAL_PATH)/manifest.xml
 
-# inherit from the proprietary version
--include vendor/samsung/trlte/BoardConfigVendor.mk
+# Shim
+TARGET_LD_SHIM_LIBS += \
+    /system/lib/libcamera_client.so|/vendor/lib/libcamera_client_shim.so \
+    /system/lib/libstagefright.so|/system/lib/libstagefright_shim.so \
+    /system/lib/libexynoscamera.so|/vendor/lib/libexynoscamera_shim.so
+
+# Legacy BLOB Support
+TARGET_PROCESS_SDK_VERSION_OVERRIDE += \
+    /system/vendor/bin/hw/rild=27
