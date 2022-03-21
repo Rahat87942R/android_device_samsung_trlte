@@ -13,10 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+LOCAL_PATH := device/samsung/j7elte
+
 PRODUCT_MAKEFILES := \
-$(LOCAL_DIR)/havoc_trlte.mk
+    $(LOCAL_PATH)/lineage_j7elte.mk
 
 COMMON_LUNCH_CHOICES := \
-    havoc_trlte-user \
-    havoc_trlte-userdebug \
-    havoc_trlte-eng
+    lineage_j7elte-user \
+    lineage_j7elte-userdebug \
+    lineage_j7elte-eng
